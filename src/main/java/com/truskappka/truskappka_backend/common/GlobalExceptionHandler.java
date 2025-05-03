@@ -1,6 +1,7 @@
 package com.truskappka.truskappka_backend.common;
 
 import com.truskappka.truskappka_backend.common.exception.ForbiddenAccessException;
+import com.truskappka.truskappka_backend.common.exception.InvalidTokenException;
 import com.truskappka.truskappka_backend.common.exception.ObjectAlreadyExistsException;
 import com.truskappka.truskappka_backend.common.exception.ObjectNotFoundException;
 import com.truskappka.truskappka_backend.user.exception.UserNotVendorException;
@@ -33,4 +34,11 @@ class GlobalExceptionHandler {
     ResponseEntity<ErrorResponse> handleUserNotVendorException(UserNotVendorException exception) {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException exception) {
+        return new ResponseEntity<>(new ErrorResponse(exception.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+
 }
