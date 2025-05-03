@@ -2,17 +2,10 @@ package com.truskappka.truskappka_backend.user.entity;
 
 import com.truskappka.truskappka_backend.opinion.entity.Opinion;
 import com.truskappka.truskappka_backend.stand.entity.Stand;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
@@ -21,11 +14,19 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
 public class User {
+
+    public User() {
+        this.uuid = UUID.randomUUID();
+    }
+
+    public User(String email) {
+        this.uuid = UUID.randomUUID();
+        this.email = email;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +36,9 @@ public class User {
     @EqualsAndHashCode.Include
     private UUID uuid;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private boolean isVendor;
 
@@ -43,4 +47,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Opinion> opinions;
+
+
 }
