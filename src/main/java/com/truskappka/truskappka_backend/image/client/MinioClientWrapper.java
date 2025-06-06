@@ -37,23 +37,11 @@ public class MinioClientWrapper {
     }
 
     public String getImageUrl(String objectName) {
-        final int EXPIRY_TIME = 60 * 60;
-        try {
-            String fullUrl = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.GET)
-                            .bucket(properties.getBucket())
-                            .object(objectName)
-                            .expiry(EXPIRY_TIME)
-                            .build()
-            );
-
-            URI uri = new URI(fullUrl);
-            return uri.getRawPath() + "?" + uri.getRawQuery();
-        } catch (Exception e) {
-            throw new MinioCustomException("Error generating stripped pre-signed URL" + e);
-        }
+        String bucket = properties.getBucket();
+        String publicBaseUrl = properties.getPublicUrl(); // e.g., http://10.0.2.2:9000
+        return publicBaseUrl + "/" + bucket + "/" + objectName;
     }
+
 
 
     public boolean doesObjectExist(String objectName) {
